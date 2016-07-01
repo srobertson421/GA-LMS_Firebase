@@ -1,0 +1,16 @@
+<div ng-if="user">
+  <form ng-submit="addMessage()">
+    <input ng-model="newMessageText" />
+    <button type="submit">Add Message</button>
+  </form>
+  <ul style="list-style: none; padding: 0">
+    <li ng-repeat="message in messages">
+      <p>{{message.text}}</p>
+      <!-- delete a message -->
+      <button ng-click="messages.$remove(message)">Delete Message</button>
+    </li>
+  </ul>
+</div>
+<div ng-if="!user">
+  <h1>Please Login</h1>
+</div>

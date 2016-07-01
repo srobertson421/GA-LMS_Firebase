@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="lms">
+<head>
+  <title>General Assembly LMS</title>
+  <base href="/">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=320, height=device-height" />
+  <!-- Angular -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/3.0.3/firebase.js"></script>
+
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/2.0.0/angularfire.min.js"></script>
+
+  <!-- Angular UI Router -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyAAnhFsdzwBhAw7xz-HVyY4kNMqj47BAz4",
+      authDomain: "ga-lms.firebaseapp.com",
+      databaseURL: "https://ga-lms.firebaseio.com",
+      storageBucket: "",
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/flatbootstrap.css">
+  <link rel="stylesheet" href="stylesheets/main.css">
+  <script src="//code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-default" role="navigation" ng-controller="NavBarCtrl">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand img-brand" ng-show="user" href="/">
+          <img class="img-responsive navbar-img" ng-src="{{user.photoURL}}" />  {{user.displayName}}
+        </a>
+        <a class="navbar-brand" ng-hide="user" href="/">
+          GA LMS
+        </a>
+      </div>
+  
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul ng-show="user" class="nav navbar-nav">
+          <li><a href="/profile">Profile</a></li>
+          <li ng-show="adminRole()"><a href="#">Create Class</a></li>
+          <li ng-show="userRole()"><a href="#">Submit Project</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-if="!user" class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><button class="btn btn-info" ng-click="login('github')">Github</button></li>
+              <li><button class="btn btn-info" ng-click="login('google')">Google</button></li>
+            </ul>
+          </li>
+          <li ng-if="user">
+            <a ng-click="logout()">Logout</a>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div>
+  </nav>
+  <div class="container">
+    <div ui-view></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="controllers/controllers.js"></script>
+  <script src="services/auth_service.js"></script>
+  <script src="services/messages_service.js"></script>
+</body>
+</html>

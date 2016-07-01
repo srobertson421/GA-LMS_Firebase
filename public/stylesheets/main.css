@@ -1,0 +1,14 @@
+html, body. div{
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+.navbar-img {
+  max-width: 50px;
+  display: inline-block !important;
+}
+
+.img-brand {
+  padding-top: 0;
+}
