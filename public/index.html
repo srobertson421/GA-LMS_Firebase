@@ -59,7 +59,7 @@
         <ul ng-show="user" class="nav navbar-nav">
           <li><a href="/profile">Profile</a></li>
           <li ng-show="adminRole()"><a href="#">Create Class</a></li>
-          <li ng-show="userRole()"><a href="#">Submit Project</a></li>
+          <li ng-show="userRole()"><a href="/submit-project">Submit Project</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li ng-if="!user" class="dropdown">
@@ -76,6 +76,7 @@
       </div><!-- /.navbar-collapse -->
     </div>
   </nav>
+  <div ng-repeat="alert in alerts" class="alert {{alert.type}}">{{alert.message}}</div>
   <div class="container">
     <div ui-view></div>
   </div>
@@ -84,5 +85,6 @@
   <script src="controllers/controllers.js"></script>
   <script src="services/auth_service.js"></script>
   <script src="services/messages_service.js"></script>
+  <script src="services/projects_service.js"></script>
 </body>
 </html>

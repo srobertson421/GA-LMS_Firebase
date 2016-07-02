@@ -12,3 +12,7 @@ html, body. div{
 .img-brand {
   padding-top: 0;
 }
+
+.profile-img {
+  max-width: 100px;
+}

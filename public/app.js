@@ -19,6 +19,16 @@ var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthSe
         return Auth.AuthObj.$requireSignIn();
       }]
     }
+  })
+  .state('submitProject', {
+    url: '/submit-project',
+    templateUrl: 'views/submit_project.html',
+    controller: 'ProjectCtrl',
+    resolve: {
+      "currentAuth": ['Auth', function(Auth) {
+        return Auth.AuthObj.$requireSignIn();
+      }]
+    }
   });
 
   //$locationProvider.html5Mode(false).hashPrefix('!');

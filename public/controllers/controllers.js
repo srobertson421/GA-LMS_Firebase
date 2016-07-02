@@ -1,6 +1,8 @@
-angular.module('Controllers', ['firebase', 'AuthService', 'MessageService'])
+angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'ProjectService', 'ui.router'])
 
 .controller('NavBarCtrl', ['$scope', 'Auth', function($scope, Auth) {
+
+  $scope.alerts = [];
 
   $scope.login = function() {
     Auth.login('github');
@@ -38,6 +40,29 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService'])
   }
 }])
 
-.controller('ProfileCtrl', ['$scope', 'currentAuth', function($scope, currentAuth) {
-  console.log(currentAuth);
+.controller('ProfileCtrl', ['$scope', 'currentAuth', 'Projects', function($scope, currentAuth, Projects) {
+  Projects.init(function(snapshot) {
+    $scope.projects = snapshot.val();
+  });
+}])
+
+.controller('ProjectCtrl', ['$scope', '$state', 'currentAuth', 'Projects', function($scope, $state, currentAuth, Projects) {
+  $scope.newProject = {
+    name: '',
+    githubLink: '',
+    deployLink: '',
+    description: ''
+  }
+
+  $scope.newProjectVersion = 'project1';
+
+  $scope.submitProject = function() {
+    Projects.addProject($scope.newProject, $scope.newProjectVersion, function(error, data, type) {
+      if(data) {
+        $state.go('profile');
+      } else {
+        $scope.alerts.push({type: type, message: error});
+      }
+    });
+  }
 }]);
