@@ -44,30 +44,34 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
 
   var vm = this;
 
-  if($scope.isAuthorized) {
-    if(!TrelloAPI.events) {
-      TrelloAPI.getCards(function(err, cards) {
-        if(!err) {
-          var newEvents = [];
-          cards.forEach(function(card) {
-            var newEvent = {
-              title: card.name,
-              type: 'info',
-              startsAt: moment(card.due).toDate()
-            }
-            newEvents.push(newEvent)
-          });
+  $scope.$watch('isAuthorized', function() {
+    console.log('isAuthorized Changed');
+    if($scope.isAuthorized) {
+      if(!TrelloAPI.events) {
+        console.log('Fetching Trello Data')
+        TrelloAPI.getCards(function(err, cards) {
+          if(!err) {
+            var newEvents = [];
+            cards.forEach(function(card) {
+              var newEvent = {
+                title: card.name,
+                type: 'info',
+                startsAt: moment(card.due).toDate()
+              }
+              newEvents.push(newEvent)
+            });
 
-          vm.events = newEvents;
-          TrelloAPI.events = newEvents;
-        } else {
-          console.log(err);
-        }
-      });
-    } else {
-      vm.events = TrelloAPI.events;
+            vm.events = newEvents;
+            TrelloAPI.events = newEvents;
+          } else {
+            console.log(err);
+          }
+        });
+      } else {
+        vm.events = TrelloAPI.events;
+      }
     }
-  }
+  });
 
   // Calendar settings
   vm.calendarView = 'month';

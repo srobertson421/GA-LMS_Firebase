@@ -1,25 +1,5 @@
 angular.module('AuthService', ['firebase', 'ui.router'])
 
-.service('GoogleAuth', ['$rootScope', function($rootScope) {
-  this.provider = new firebase.auth.GoogleAuthProvider();
-
-  // Add scopes
-  this.provider.addScope('https://www.googleapis.com/auth/calendar');
-
-  this.login = function() {
-    firebase.auth().signInWithPopup(this.provider).then(function(result) {
-      // Gives you a Google access token, use it for the Google API
-      var token = result.credential.accessToken;
-
-      // The signed-in user info
-      var user = result.user;
-
-    }).catch(function(error) {
-      console.log(error.code, error.message);
-    });
-  }
-}])
-
 .service('Auth', ['$firebaseAuth', '$firebaseArray', '$rootScope', '$state', function($firebaseAuth, $firebaseArray, $rootScope, $state) {
   var rolesRef = firebase.database().ref().child('roles');
   var roles = $firebaseArray(rolesRef);

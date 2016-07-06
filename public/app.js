@@ -3,26 +3,6 @@ var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthSe
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/404');
 
-  /*
-  resolve: {
-      cards: ['Trello', function(Trello) {
-        Trello.getCards(function(cards) {
-          console.log(cards);
-          var newEvents = [];
-          cards.forEach(function(card) {
-            var newEvent = {
-              title: card.name,
-              type: 'info',
-              startsAt: moment(card.due).toDate()
-            }
-            newEvents.push(newEvent)
-          });
-          //return newEvents;
-        });
-      }]
-    }
-  */
-
   //define routes
   $stateProvider
   .state('home', {
@@ -55,7 +35,6 @@ var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthSe
     }
   });
 
-  //$locationProvider.html5Mode(false).hashPrefix('!');
   $locationProvider.html5Mode(true);
 }])
 
