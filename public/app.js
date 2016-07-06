@@ -1,14 +1,38 @@
-var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthService'])
+var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthService', 'TrelloService'])
 
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/404');
+
+  /*
+  resolve: {
+      cards: ['Trello', function(Trello) {
+        Trello.getCards(function(cards) {
+          console.log(cards);
+          var newEvents = [];
+          cards.forEach(function(card) {
+            var newEvent = {
+              title: card.name,
+              type: 'info',
+              startsAt: moment(card.due).toDate()
+            }
+            newEvents.push(newEvent)
+          });
+          //return newEvents;
+        });
+      }]
+    }
+  */
 
   //define routes
   $stateProvider
   .state('home', {
     url: '/',
     templateUrl: 'views/home.html',
-    controller: 'HomeCtrl'
+    controller: 'HomeCtrl as vm'
+  })
+  .state('404', {
+    url: '/404',
+    templateUrl: 'views/404.html'
   })
   .state('profile', {
     url: '/profile',
