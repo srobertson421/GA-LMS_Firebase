@@ -14,7 +14,6 @@ angular.module('AuthService', ['firebase', 'ui.router'])
       // The signed-in user info
       var user = result.user;
 
-      console.log(token);
     }).catch(function(error) {
       console.log(error.code, error.message);
     });
@@ -30,9 +29,7 @@ angular.module('AuthService', ['firebase', 'ui.router'])
   auth.$onAuthStateChanged(function(firebaseUser) {
     if(firebaseUser) {
       $rootScope.user = firebaseUser;
-      console.log('Logged In', firebaseUser);
       rolesRef.child(firebaseUser.uid).once('value').then(function(snapshot) {
-        console.log(snapshot.val());
         var data = snapshot.val();
         if(!data) {
           rolesRef.child(firebaseUser.uid).set({
@@ -51,7 +48,6 @@ angular.module('AuthService', ['firebase', 'ui.router'])
 
   this.login = function(provider) {
     auth.$signInWithPopup(provider).then(function(firebaseUser) {
-      console.log("Token", firebaseUser);
       return firebaseUser.uid;
     }).catch(function(error) {
       console.log("Authentication failed:", error);

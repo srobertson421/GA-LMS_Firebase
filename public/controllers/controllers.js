@@ -1,5 +1,13 @@
 angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'ProjectService', 'TrelloService', 'ui.router', 'mwl.calendar', 'ui.bootstrap'])
 
+.run(['$rootScope', 'TrelloAPI', function($rootScope, TrelloAPI) {
+  TrelloAPI.authorize(function(err, success) {
+    $rootScope.$apply(function() {
+      $rootScope.isAuthorized = true;
+    });
+  });
+}])
+
 /* ---- Navbar Controller ---- */
 .controller('NavBarCtrl', ['$scope', 'Auth', function($scope, Auth, GoogleAuth) {
 
@@ -31,23 +39,35 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
 }])
 
 /* ---- Home Controller ---- */
-.controller('HomeCtrl', ['$scope', 'Messages', 'Trello', function($scope, Messages, Trello) {
+/* ---- Using Controller 'as' to use calendar ---- */
+.controller('HomeCtrl', ['$scope', 'Messages', 'TrelloAPI', function($scope, Messages, TrelloAPI) {
 
   var vm = this;
 
-  Trello.getCards(function(err, cards) {
-    var newEvents = [];
-    cards.forEach(function(card) {
-      var newEvent = {
-        title: card.name,
-        type: 'info',
-        startsAt: moment(card.due).toDate()
-      }
-      newEvents.push(newEvent)
-    });
+  if($scope.isAuthorized) {
+    if(!TrelloAPI.events) {
+      TrelloAPI.getCards(function(err, cards) {
+        if(!err) {
+          var newEvents = [];
+          cards.forEach(function(card) {
+            var newEvent = {
+              title: card.name,
+              type: 'info',
+              startsAt: moment(card.due).toDate()
+            }
+            newEvents.push(newEvent)
+          });
 
-    vm.events = newEvents;
-  });
+          vm.events = newEvents;
+          TrelloAPI.events = newEvents;
+        } else {
+          console.log(err);
+        }
+      });
+    } else {
+      vm.events = TrelloAPI.events;
+    }
+  }
 
   // Calendar settings
   vm.calendarView = 'month';

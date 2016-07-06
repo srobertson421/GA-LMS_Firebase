@@ -1,23 +1,26 @@
 angular.module('TrelloService', [])
 
-.config(function() {
-  Trello.authorize({
-    type: 'popup',
-    name: 'GA-LMS',
-    scope: {
-      read: true,
-      write: true },
-    expiration: 'never',
-    success: function() {
-      console.log('Trello auth success');
-    },
-    error: function() {
-      console.log('Trello auth failure');
-    }
-  });
-})
+.service('TrelloAPI', [function() {
 
-.service('Trello', [function() {
+  this.authorize = function(callback) {
+    Trello.authorize({
+      type: 'popup',
+      name: 'GA-LMS',
+      scope: {
+        read: true,
+        write: true },
+      expiration: 'never',
+      success: function() {
+        console.log(Trello.token());
+        console.log('Trello auth success');
+        callback(null, 'success');
+      },
+      error: function() {
+        console.log('Trello auth failure');
+        callback('error', null);
+      }
+    });
+  }
 
   this.getBoards = function() {
     Trello.get('members/me/boards', function success(response) {
