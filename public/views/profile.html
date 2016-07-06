@@ -1,3 +1,14 @@
-<h1>Profile</h1>
-<h3>{{user.displayName}} <small>{{user.email}}</small></h3>
-<img ng-src="{{user.photoURL}}" />
+<h1>{{user.displayName}} <small>{{user.email}}</small></h1>
+<h2>Projects</h2>
+<div class="panel panel-primary" ng-repeat="project in projects track by $index">
+  <div class="panel-heading">
+    <h3 class="pull-left panel-title">{{project.name}}</h3>
+    <a href="/edit-project" class="btn btn-warning pull-right">Edit</a>
+    <div class="clearfix"></div>
+  </div>
+  <div class="panel-body">
+    <a href="{{project.githubLink}}" target="_blank" class="btn btn-info">Github Link</a>
+    <a href="{{project.deployLink}}" target="_blank" class="btn btn-info">Deployment Link</a>
+    <p>{{project.description}}</p>
+  </div>
+</div>

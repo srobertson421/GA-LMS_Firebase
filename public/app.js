@@ -1,14 +1,18 @@
-var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthService'])
+var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthService', 'TrelloService'])
 
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/404');
 
   //define routes
   $stateProvider
   .state('home', {
     url: '/',
     templateUrl: 'views/home.html',
-    controller: 'HomeCtrl'
+    controller: 'HomeCtrl as vm'
+  })
+  .state('404', {
+    url: '/404',
+    templateUrl: 'views/404.html'
   })
   .state('profile', {
     url: '/profile',
@@ -19,9 +23,18 @@ var app = angular.module('lms', ['firebase', 'ui.router', 'Controllers', 'AuthSe
         return Auth.AuthObj.$requireSignIn();
       }]
     }
+  })
+  .state('submitProject', {
+    url: '/submit-project',
+    templateUrl: 'views/submit_project.html',
+    controller: 'ProjectCtrl',
+    resolve: {
+      "currentAuth": ['Auth', function(Auth) {
+        return Auth.AuthObj.$requireSignIn();
+      }]
+    }
   });
 
-  //$locationProvider.html5Mode(false).hashPrefix('!');
   $locationProvider.html5Mode(true);
 }])
 

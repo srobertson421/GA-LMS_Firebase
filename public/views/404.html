@@ -1,0 +1,1 @@
+<h1 class="text-danger">404 Not Found</h1>

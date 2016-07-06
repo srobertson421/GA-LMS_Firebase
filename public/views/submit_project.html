@@ -1,0 +1,21 @@
+<h1>Submit your project</h1>
+
+<div class="form-group">
+  <select class="form-control" ng-model="newProjectVersion">
+    <option selected value="project1">Project1</option>
+    <option value="project2">Project2</option>
+    <option value="project3">Project3</option>
+    <option value="project4">Project4</option>
+  </select>
+  <form ng-submit="submitProject()">
+    <label>Project Name</label>
+    <input class="form-control" type="text" ng-model="newProject.name" placeholder="Enter project name">
+    <label>Github Link</label>
+    <input class="form-control" type="url" ng-model="newProject.githubLink" placeholder="Enter project github link">
+    <label>Deployment Link</label>
+    <input class="form-control" type="url" ng-model="newProject.deployLink" placeholder="Enter project deployment link">
+    <label>Description</label>
+    <textarea class="form-control" cols="10" rows="8" ng-model="newProject.description" placeholder="Enter project description"></textarea>
+    <input class="btn btn-primary" type="submit">
+  </form>
+</div>
