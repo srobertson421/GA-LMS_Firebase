@@ -2,6 +2,9 @@ angular.module('TrelloService', [])
 
 .service('TrelloAPI', [function() {
 
+  //this.boardId = '57179c9c2c05a97c4b22e2d2';
+  this.boardId = '';
+
   this.authorize = function(callback) {
     Trello.authorize({
       type: 'popup',
@@ -11,7 +14,6 @@ angular.module('TrelloService', [])
         write: true },
       expiration: 'never',
       success: function() {
-        console.log(Trello.token());
         console.log('Trello auth success');
         callback(null, 'success');
       },
@@ -22,16 +24,16 @@ angular.module('TrelloService', [])
     });
   }
 
-  this.getBoards = function() {
+  this.getBoards = function(callback) {
     Trello.get('members/me/boards', function success(response) {
-      console.log(response);
+      callback(null, response)
     }, function error(error) {
-      console.log(error);
+      callback(error, null)
     });
   }
 
   this.getCards = function(callback) {
-    Trello.get('boards/57179c9c2c05a97c4b22e2d2/cards', function success(response) {
+    Trello.get('boards/' + this.boardId + '/cards', function success(response) {
       //console.log(response);
       callback(null, response);
     }, function error(error) {

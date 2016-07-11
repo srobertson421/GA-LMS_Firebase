@@ -1,0 +1,15 @@
+<h1>Create a New Class</h1>
+
+<div class="form-group">
+  <form ng-submit="submitClass()">
+    <label>Class Name</label>
+    <input class="form-control" type="text" ng-model="newProject.name" placeholder="Enter project name">
+    <label>Github Link</label>
+    <input class="form-control" type="url" ng-model="newProject.githubLink" placeholder="Enter project github link">
+    <label>Deployment Link</label>
+    <input class="form-control" type="url" ng-model="newProject.deployLink" placeholder="Enter project deployment link">
+    <label>Description</label>
+    <textarea class="form-control" cols="10" rows="8" ng-model="newProject.description" placeholder="Enter project description"></textarea>
+    <input class="btn btn-primary" type="submit">
+  </form>
+</div>

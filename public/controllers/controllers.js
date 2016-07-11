@@ -44,10 +44,38 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
 
   var vm = this;
 
+  vm.boardId = '';
+
+  $scope.changeBoard = function() {
+    TrelloAPI.boardId = vm.boardId;
+    if(vm.boardId) {
+      console.log('Fetching Trello Data')
+      TrelloAPI.getCards(function(err, cards) {
+        if(!err) {
+          var newEvents = [];
+          cards.forEach(function(card) {
+            var newEvent = {
+              title: card.name,
+              type: 'info',
+              startsAt: moment(card.due).toDate()
+            }
+            newEvents.push(newEvent)
+          });
+
+          vm.events = newEvents;
+          TrelloAPI.events = newEvents;
+        } else {
+          console.log(err);
+        }
+      });
+    } else {
+      vm.events = TrelloAPI.events;
+    }
+  }
+
   $scope.$watch('isAuthorized', function() {
-    console.log('isAuthorized Changed');
     if($scope.isAuthorized) {
-      if(!TrelloAPI.events) {
+      if(!TrelloAPI.events && $scope.boardId) {
         console.log('Fetching Trello Data')
         TrelloAPI.getCards(function(err, cards) {
           if(!err) {
@@ -71,6 +99,15 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
         vm.events = TrelloAPI.events;
       }
     }
+
+    if(!TrelloAPI.boardId) {
+      TrelloAPI.getBoards(function(err, data) {
+        $scope.boards = data;
+        TrelloAPI.boards = data;
+      });
+    } else {
+      $scope.boards = TrelloAPI.boards
+    }
   });
 
   // Calendar settings
@@ -91,8 +128,9 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
   }
 
   vm.getBoards = function() {
-    console.log('Hit controller trello call');
-    Trello.getBoards();
+    TrelloAPI.getBoards(function(data) {
+      console.log(data);
+    });
   }
 }])
 
@@ -126,4 +164,8 @@ angular.module('Controllers', ['firebase', 'AuthService', 'MessageService', 'Pro
       }
     });
   }
+}])
+
+.controller('CreateClassCtrl', ['$scope', 'Classes', function($scope, Classes) {
+  
 }]);
